@@ -53,24 +53,17 @@ encourage or provide a [native, if not core][wtf] Web Cryptography module.
 $ npm install @trust/webcrypto --save
 ```
 
-### Not for use in Webpack
+### Usage in Webpack
 
-This library is not for use in Webpack.
-
-The whole point of this library is that it's an exact duplicate of the browser's WebCrypto API,
-for the server side.
-
-For Webpacked web applications,
-you don't need it (and can't use it).
-If this module is transitively included by another dependency,
-you have to exclude it by adding it to the [`externals` section in the Webpack config](https://webpack.js.org/configuration/externals/),
-such as this:
+If using `target`: `"web"` | `"web-worker`, you need to add the following configuration to your `externals` section to tell Webpack to use the existing browser implementation:
 
 ```
 externals: {
   '@trust/webcrypto': 'crypto'
 }
 ```
+
+Using other NodeJS-based targets (`"node"`, `"async-node"`, `"electron-main"`, etc.) should work as expected.
 
 ## Usage
 
