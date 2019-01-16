@@ -48,9 +48,9 @@ class SupportedAlgorithms {
   /**
    * Define Algorithm
    */
-  define (alg, op, type) {
+  define (alg, op, implementation) {
     let registeredAlgorithms = this[op]
-    registeredAlgorithms[alg] = type
+    registeredAlgorithms[alg] = implementation
   }
 
   /**
@@ -81,7 +81,11 @@ class SupportedAlgorithms {
       let desiredType, normalizedAlgorithm
 
       try {
-        desiredType = require(registeredAlgorithms[algName])
+        let createAlgorithm = registeredAlgorithms[algName]
+        if(typeof createAlgorithm !== "function") {
+          return new NotSupportedError(algName)
+        }
+        desiredType = createAlgorithm()
         normalizedAlgorithm = new desiredType(alg)
         normalizedAlgorithm.name = algName
       } catch (error) {
